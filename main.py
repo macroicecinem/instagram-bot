@@ -1,21 +1,16 @@
 import os
-import hmac
-import hashlib
 import json
 import requests
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-# Environment variables
 ACCESS_TOKEN = os.environ.get("ACCESS_TOKEN")
 APP_SECRET = os.environ.get("APP_SECRET")
 VERIFY_TOKEN = os.environ.get("VERIFY_TOKEN", "macroicebot123")
 
-# Trigger keyword
 TRIGGER_KEYWORD = "+"
 
-# Messages
 COMMENT_REPLY = "📩 To'liq ro'yxat yuborildi! Direct tekshiring 👇"
 
 DM_1 = """Salom! 👋 Ro'yxatni olish uchun avval Instagram sahifamizga obuna bo'ling 👇
@@ -27,14 +22,10 @@ t.me/MACROICEcinema
 Kanalda 92 ta filmning to'liq tartibi bor.
 Obuna bo'lishni unutmang! 🎬"""
 
-# Track users:
-# "waiting" = DM 1 yuborilgan, javob kutilmoqda
-# "done" = DM 2 ham yuborilgan
 user_states = {}
 
 
 def send_dm(user_id, message):
-    """Send DM to Instagram user"""
     url = "https://graph.instagram.com/v21.0/me/messages"
     payload = {
         "recipient": {"id": user_id},
@@ -47,7 +38,6 @@ def send_dm(user_id, message):
 
 
 def reply_to_comment(comment_id, message):
-    """Reply to a comment"""
     url = f"https://graph.instagram.com/v21.0/{comment_id}/replies"
     payload = {"message": message}
     params = {"access_token": ACCESS_TOKEN}
@@ -69,15 +59,7 @@ def verify_webhook():
 
 @app.route("/webhook", methods=["POST"])
 def handle_webhook():
-    # Verify signature
-    signature = request.headers.get("X-Hub-Signature-256", "")
-    body = request.get_data()
-    expected = "sha256=" + hmac.new(
-        APP_SECRET.encode(), body, hashlib.sha256
-    ).hexdigest()
-    if not hmac.compare_digest(signature, expected):
-        return "Invalid signature", 403
-
+    # Signature tekshiruvini o'chiramiz (test uchun)
     data = request.json
     print(f"Webhook: {json.dumps(data, indent=2)}")
 
@@ -87,7 +69,6 @@ def handle_webhook():
                 field = change.get("field")
                 value = change.get("value", {})
 
-                # --- COMMENT event ---
                 if field == "comments":
                     comment_text = value.get("text", "").strip()
                     commenter_id = value.get("from", {}).get("id")
@@ -97,28 +78,22 @@ def handle_webhook():
 
                     if TRIGGER_KEYWORD in comment_text and commenter_id:
                         if user_states.get(commenter_id) not in ("waiting", "done"):
-                            # 1. Comment ga javob
                             if comment_id:
                                 reply_to_comment(comment_id, COMMENT_REPLY)
-                            # 2. DM 1 yuborish
                             if send_dm(commenter_id, DM_1):
                                 user_states[commenter_id] = "waiting"
                                 print(f"✅ DM 1 sent to {commenter_id}")
 
-                # --- MESSAGE event (foydalanuvchi javob yozdi) ---
                 elif field == "messages":
                     sender_id = value.get("sender", {}).get("id")
-                    msg_text = value.get("message", {}).get("text", "")
-
-                    print(f"Message from {sender_id}: '{msg_text}'")
-
-                    # Agar bot o'zi yubormagan bo'lsa
                     my_id = value.get("recipient", {}).get("id")
+
                     if sender_id == my_id:
-                        continue  # bot o'zi yozgan, skip
+                        continue
+
+                    print(f"Message from {sender_id}")
 
                     if user_states.get(sender_id) == "waiting":
-                        # Nima yozsa ham DM 2 yuborish
                         if send_dm(sender_id, DM_2):
                             user_states[sender_id] = "done"
                             print(f"✅ DM 2 sent to {sender_id}")
