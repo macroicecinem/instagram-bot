@@ -6,7 +6,6 @@ from flask import Flask, request, jsonify
 app = Flask(__name__)
 
 ACCESS_TOKEN = os.environ.get("ACCESS_TOKEN")
-APP_SECRET = os.environ.get("APP_SECRET")
 VERIFY_TOKEN = os.environ.get("VERIFY_TOKEN", "macroicebot123")
 
 TRIGGER_KEYWORD = "+"
@@ -22,7 +21,10 @@ t.me/MACROICEcinema
 Kanalda 92 ta filmning to'liq tartibi bor.
 Obuna bo'lishni unutmang! 🎬"""
 
+# State: user_id -> "dm1_sent" | "done"
 user_states = {}
+# Duplicate prevention: set of processed webhook IDs
+processed_ids = set()
 
 
 def send_dm(user_id, message):
@@ -52,7 +54,6 @@ def verify_webhook():
     token = request.args.get("hub.verify_token")
     challenge = request.args.get("hub.challenge")
     if mode == "subscribe" and token == VERIFY_TOKEN:
-        print("Webhook verified!")
         return challenge, 200
     return "Forbidden", 403
 
@@ -71,45 +72,50 @@ def handle_webhook():
                 value = change.get("value", {})
 
                 if field == "comments":
+                    comment_id = value.get("id")
                     comment_text = value.get("text", "").strip()
                     commenter_id = value.get("from", {}).get("id")
-                    comment_id = value.get("id")
+
+                    # Duplicate check
+                    if comment_id in processed_ids:
+                        continue
+                    processed_ids.add(comment_id)
 
                     print(f"Comment: '{comment_text}' from {commenter_id}")
 
                     if TRIGGER_KEYWORD in comment_text and commenter_id:
-                        # Faqat comment ga javob yozamiz, DM YUBORMAYAMIZ
                         if comment_id:
                             reply_to_comment(comment_id, COMMENT_REPLY)
-                            print(f"✅ Comment reply sent to {commenter_id}")
 
             # --- MESSAGES ---
             for msg in entry.get("messaging", []):
                 sender_id = msg.get("sender", {}).get("id")
                 my_id = msg.get("recipient", {}).get("id")
+                msg_id = msg.get("message", {}).get("mid", "")
                 is_echo = msg.get("message", {}).get("is_echo", False)
 
-                # Bot o'zi yozgan xabarni o'tkazib yuborish
                 if is_echo or sender_id == my_id:
                     continue
 
-                print(f"Message from {sender_id}, state: {user_states.get(sender_id)}")
+                # Duplicate check
+                if msg_id in processed_ids:
+                    continue
+                processed_ids.add(msg_id)
 
                 state = user_states.get(sender_id)
+                print(f"Message from {sender_id}, state: {state}")
 
                 if state is None:
-                    # Birinchi DM — obuna so'rash
+                    # Birinchi xabar — DM 1 yuborish
                     if send_dm(sender_id, DM_1):
-                        user_states[sender_id] = "waiting"
+                        user_states[sender_id] = "dm1_sent"
                         print(f"✅ DM 1 sent to {sender_id}")
 
-                elif state == "waiting":
-                    # Odam biror narsa yozdi — ro'yxat yuborish
+                elif state == "dm1_sent":
+                    # Odam javob yozdi — DM 2 yuborish
                     if send_dm(sender_id, DM_2):
                         user_states[sender_id] = "done"
                         print(f"✅ DM 2 sent to {sender_id}")
-
-                # "done" bo'lsa hech narsa yubormaymiz
 
     except Exception as e:
         print(f"Error: {e}")
