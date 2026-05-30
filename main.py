@@ -11,7 +11,7 @@ VERIFY_TOKEN = os.environ.get("VERIFY_TOKEN", "macroicebot123")
 
 TRIGGER_KEYWORD = "+"
 
-COMMENT_REPLY = "📩 Ro'yxat uchun Direct ga yozing!"
+COMMENT_REPLY = "📩 Ro'yxatni olish uchun iltmos Direct ga yozing!"
 
 DM_1 = """Salom! 👋 Ro'yxatni olish uchun avval Instagram sahifamizga obuna bo'ling 👇
 @macroice_cinema
