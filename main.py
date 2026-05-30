@@ -85,18 +85,19 @@ def handle_webhook():
                                 print(f"✅ DM 1 sent to {commenter_id}")
 
                 elif field == "messages":
-                    sender_id = value.get("sender", {}).get("id")
-                    my_id = value.get("recipient", {}).get("id")
+    sender_id = value.get("sender", {}).get("id")
+    my_id = value.get("recipient", {}).get("id")
+    is_echo = value.get("message", {}).get("is_echo", False)
 
-                    if sender_id == my_id:
-                        continue
+    if is_echo or sender_id == my_id:
+        continue
 
-                    print(f"Message from {sender_id}")
+    print(f"Message from {sender_id}")
 
-                    if user_states.get(sender_id) == "waiting":
-                        if send_dm(sender_id, DM_2):
-                            user_states[sender_id] = "done"
-                            print(f"✅ DM 2 sent to {sender_id}")
+    if user_states.get(sender_id) == "waiting":
+        if send_dm(sender_id, DM_2):
+            user_states[sender_id] = "done"
+            print(f"✅ DM 2 sent to {sender_id}")
 
     except Exception as e:
         print(f"Error: {e}")
