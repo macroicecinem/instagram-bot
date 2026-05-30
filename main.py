@@ -59,12 +59,12 @@ def verify_webhook():
 
 @app.route("/webhook", methods=["POST"])
 def handle_webhook():
-    # Signature tekshiruvini o'chiramiz (test uchun)
     data = request.json
     print(f"Webhook: {json.dumps(data, indent=2)}")
 
     try:
         for entry in data.get("entry", []):
+            # Comments
             for change in entry.get("changes", []):
                 field = change.get("field")
                 value = change.get("value", {})
@@ -84,20 +84,25 @@ def handle_webhook():
                                 user_states[commenter_id] = "waiting"
                                 print(f"✅ DM 1 sent to {commenter_id}")
 
-                elif field == "messages":
-    sender_id = value.get("sender", {}).get("id")
-    my_id = value.get("recipient", {}).get("id")
-    is_echo = value.get("message", {}).get("is_echo", False)
+            # Messages
+            for msg in entry.get("messaging", []):
+                sender_id = msg.get("sender", {}).get("id")
+                my_id = msg.get("recipient", {}).get("id")
+                is_echo = msg.get("message", {}).get("is_echo", False)
 
-    if is_echo or sender_id == my_id:
-        continue
+                if is_echo or sender_id == my_id:
+                    continue
 
-    print(f"Message from {sender_id}")
+                print(f"Message from {sender_id}")
 
-    if user_states.get(sender_id) == "waiting":
-        if send_dm(sender_id, DM_2):
-            user_states[sender_id] = "done"
-            print(f"✅ DM 2 sent to {sender_id}")
+                if user_states.get(sender_id) == "waiting":
+                    if send_dm(sender_id, DM_2):
+                        user_states[sender_id] = "done"
+                        print(f"✅ DM 2 sent to {sender_id}")
+                elif user_states.get(sender_id) is None:
+                    if send_dm(sender_id, DM_1):
+                        user_states[sender_id] = "waiting"
+                        print(f"✅ DM 1 sent to {sender_id}")
 
     except Exception as e:
         print(f"Error: {e}")
