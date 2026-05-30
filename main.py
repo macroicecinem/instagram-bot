@@ -13,8 +13,7 @@ TRIGGER_KEYWORD = "+"
 COMMENT_REPLY = "📩 Ro'yxatni olish uchun iltmos Direct ga yozing!"
 
 DM_1 = """Salom! 👋 Ro'yxatni olish uchun avval Instagram sahifamizga obuna bo'ling 👇
-@macroice_cinema
-Obuna bo'lgach "obuna bo'ldim" deb yozing ✅"""
+@macroice_cinema"""
 
 DM_2 = """So'ragan ro'yxatingiz shu yerda 👇
 t.me/MACROICEcinema
