@@ -64,7 +64,8 @@ def handle_webhook():
 
     try:
         for entry in data.get("entry", []):
-            # Comments
+
+            # --- COMMENTS ---
             for change in entry.get("changes", []):
                 field = change.get("field")
                 value = change.get("value", {})
@@ -77,32 +78,38 @@ def handle_webhook():
                     print(f"Comment: '{comment_text}' from {commenter_id}")
 
                     if TRIGGER_KEYWORD in comment_text and commenter_id:
-                        if user_states.get(commenter_id) not in ("waiting", "done"):
-                            if comment_id:
-                                reply_to_comment(comment_id, COMMENT_REPLY)
-                            if send_dm(commenter_id, DM_1):
-                                user_states[commenter_id] = "waiting"
-                                print(f"✅ DM 1 sent to {commenter_id}")
+                        # Faqat comment ga javob yozamiz, DM YUBORMAYAMIZ
+                        if comment_id:
+                            reply_to_comment(comment_id, COMMENT_REPLY)
+                            print(f"✅ Comment reply sent to {commenter_id}")
 
-            # Messages
+            # --- MESSAGES ---
             for msg in entry.get("messaging", []):
                 sender_id = msg.get("sender", {}).get("id")
                 my_id = msg.get("recipient", {}).get("id")
                 is_echo = msg.get("message", {}).get("is_echo", False)
 
+                # Bot o'zi yozgan xabarni o'tkazib yuborish
                 if is_echo or sender_id == my_id:
                     continue
 
-                print(f"Message from {sender_id}")
+                print(f"Message from {sender_id}, state: {user_states.get(sender_id)}")
 
-                if user_states.get(sender_id) == "waiting":
-                    if send_dm(sender_id, DM_2):
-                        user_states[sender_id] = "done"
-                        print(f"✅ DM 2 sent to {sender_id}")
-                elif user_states.get(sender_id) is None:
+                state = user_states.get(sender_id)
+
+                if state is None:
+                    # Birinchi DM — obuna so'rash
                     if send_dm(sender_id, DM_1):
                         user_states[sender_id] = "waiting"
                         print(f"✅ DM 1 sent to {sender_id}")
+
+                elif state == "waiting":
+                    # Odam biror narsa yozdi — ro'yxat yuborish
+                    if send_dm(sender_id, DM_2):
+                        user_states[sender_id] = "done"
+                        print(f"✅ DM 2 sent to {sender_id}")
+
+                # "done" bo'lsa hech narsa yubormaymiz
 
     except Exception as e:
         print(f"Error: {e}")
