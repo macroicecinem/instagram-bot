@@ -7,6 +7,7 @@ app = Flask(__name__)
 
 ACCESS_TOKEN = os.environ.get("ACCESS_TOKEN")
 VERIFY_TOKEN = os.environ.get("VERIFY_TOKEN", "macroicebot123")
+MY_ACCOUNT_ID = "17841444255173953"  # macroice_cinema account ID
 
 TRIGGER_KEYWORD = "+"
 
@@ -49,6 +50,10 @@ def handle_webhook():
                     comment_id = value.get("id")
                     comment_text = value.get("text", "").strip()
                     commenter_id = value.get("from", {}).get("id")
+
+                    # O'z akkauntimiz commentini o'tkazib yuborish
+                    if commenter_id == MY_ACCOUNT_ID:
+                        continue
 
                     if comment_id in processed_ids:
                         continue
