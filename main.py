@@ -7,11 +7,13 @@ app = Flask(__name__)
 
 ACCESS_TOKEN = os.environ.get("ACCESS_TOKEN")
 VERIFY_TOKEN = os.environ.get("VERIFY_TOKEN", "macroicebot123")
-MY_ACCOUNT_ID = "17841444255173953"  # macroice_cinema account ID
+MY_ACCOUNT_ID = "17841444255173953"
 
-TRIGGER_KEYWORD = "+"
-
-COMMENT_REPLY = "📩 To'liq ro'yxat uchun biodagi telegram kanalimizga o'ting."
+# Keyword -> Javob
+KEYWORDS = {
+    "+": "📩 To'liq ro'yxat uchun biodagi telegram kanalimizga o'ting.",
+    "marvel": "📩 To'liq Marvel ro'yxati uchun biodagi telegram kanalimizga o'ting.",
+}
 
 processed_ids = set()
 
@@ -48,10 +50,9 @@ def handle_webhook():
 
                 if field == "comments":
                     comment_id = value.get("id")
-                    comment_text = value.get("text", "").strip()
+                    comment_text = value.get("text", "").strip().lower()
                     commenter_id = value.get("from", {}).get("id")
 
-                    # O'z akkauntimiz commentini o'tkazib yuborish
                     if commenter_id == MY_ACCOUNT_ID:
                         continue
 
@@ -61,10 +62,12 @@ def handle_webhook():
 
                     print(f"Comment: '{comment_text}' from {commenter_id}")
 
-                    if TRIGGER_KEYWORD in comment_text and commenter_id:
-                        if comment_id:
-                            reply_to_comment(comment_id, COMMENT_REPLY)
-                            print(f"✅ Comment reply sent to {commenter_id}")
+                    # Keyword tekshirish
+                    for keyword, reply in KEYWORDS.items():
+                        if keyword in comment_text:
+                            reply_to_comment(comment_id, reply)
+                            print(f"✅ Reply sent for keyword '{keyword}' to {commenter_id}")
+                            break
 
     except Exception as e:
         print(f"Error: {e}")
