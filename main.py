@@ -9,8 +9,19 @@ ACCESS_TOKEN = os.environ.get("ACCESS_TOKEN")
 VERIFY_TOKEN = os.environ.get("VERIFY_TOKEN", "macroicebot123")
 MY_ACCOUNT_ID = "17841444255173953"
 
-# Keyword -> Javob
-KEYWORDS = {
+# Video ID -> keyword -> javob
+VIDEO_KEYWORDS = {
+    "18475932589097936": {
+        "+": "📩 To'liq ro'yxat uchun biodagi telegram kanalimizga o'ting.",
+        "marvel": "📩 To'liq Marvel ro'yxati uchun biodagi telegram kanalimizga o'ting.",
+    },
+    "18096396052932962": {
+        "+": "Kinoni olish uchun avval sahifamizga obuna bo'ling va biodagi Telegram kanalimizga o'ting! 🎬",
+    },
+}
+
+# Default — video ID mos kelmasa
+DEFAULT_KEYWORDS = {
     "+": "📩 To'liq ro'yxat uchun biodagi telegram kanalimizga o'ting.",
     "marvel": "📩 To'liq Marvel ro'yxati uchun biodagi telegram kanalimizga o'ting.",
 }
@@ -52,6 +63,7 @@ def handle_webhook():
                     comment_id = value.get("id")
                     comment_text = value.get("text", "").strip().lower()
                     commenter_id = value.get("from", {}).get("id")
+                    media_id = value.get("media", {}).get("id")
 
                     if commenter_id == MY_ACCOUNT_ID:
                         continue
@@ -60,10 +72,12 @@ def handle_webhook():
                         continue
                     processed_ids.add(comment_id)
 
-                    print(f"Comment: '{comment_text}' from {commenter_id}")
+                    print(f"Comment: '{comment_text}' from {commenter_id}, media: {media_id}")
 
-                    # Keyword tekshirish
-                    for keyword, reply in KEYWORDS.items():
+                    # Video ga mos keyword larni olish
+                    keywords = VIDEO_KEYWORDS.get(media_id, DEFAULT_KEYWORDS)
+
+                    for keyword, reply in keywords.items():
                         if keyword in comment_text:
                             reply_to_comment(comment_id, reply)
                             print(f"✅ Reply sent for keyword '{keyword}' to {commenter_id}")
