@@ -18,6 +18,9 @@ VIDEO_KEYWORDS = {
     "18096396052932962": {
         "+": "Kinoni olish uchun avval sahifamizga obuna bo'ling va biodagi Telegram kanalimizga o'ting! 🎬",
     },
+    "18093412184217647": {
+        "youtube": "Sahifaga obuna bo'ling — linkni direktingizga yubordim! 🎬📩",
+    },
 }
 
 # Default — video ID mos kelmasa
