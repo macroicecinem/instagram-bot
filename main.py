@@ -9,6 +9,10 @@ ACCESS_TOKEN = os.environ.get("ACCESS_TOKEN")
 VERIFY_TOKEN = os.environ.get("VERIFY_TOKEN", "macroicebot123")
 MY_ACCOUNT_ID = "17841444255173953"
 
+YOUTUBE_REPLY = "YouTube videoni ko'rish uchun profil biosidagi havolaga bosing! 👆🔗"
+
+YOUTUBE_KEYWORDS = ["youtube", "ютуб", "yutub", "yutup", "youtuob", "yt", "utub", "utup", "yutib", "youtub"]
+
 # Video ID -> keyword -> javob
 VIDEO_KEYWORDS = {
     "18475932589097936": {
@@ -19,11 +23,11 @@ VIDEO_KEYWORDS = {
         "+": "Kinoni olish uchun avval sahifamizga obuna bo'ling va biodagi Telegram kanalimizga o'ting! 🎬",
     },
     "18093412184217647": {
-        "youtube": "Sahifaga obuna bo'ling — linkni direktingizga yubordim! 🎬📩",
+        "youtube": YOUTUBE_REPLY,
     },
 }
 
-# Default — video ID mos kelmasa
+# Default
 DEFAULT_KEYWORDS = {
     "+": "📩 To'liq ro'yxat uchun biodagi telegram kanalimizga o'ting.",
     "marvel": "📩 To'liq Marvel ro'yxati uchun biodagi telegram kanalimizga o'ting.",
@@ -39,6 +43,13 @@ def reply_to_comment(comment_id, message):
     response = requests.post(url, json=payload, params=params)
     print(f"Comment reply: {response.status_code} - {response.text}")
     return response.status_code == 200
+
+
+def check_youtube(text):
+    for kw in YOUTUBE_KEYWORDS:
+        if kw in text:
+            return True
+    return False
 
 
 @app.route("/webhook", methods=["GET"])
@@ -76,6 +87,12 @@ def handle_webhook():
                     processed_ids.add(comment_id)
 
                     print(f"Comment: '{comment_text}' from {commenter_id}, media: {media_id}")
+
+                    # Avval YouTube tekshirish — barcha videolarda ishlaydi
+                    if check_youtube(comment_text):
+                        reply_to_comment(comment_id, YOUTUBE_REPLY)
+                        print(f"✅ YouTube reply sent to {commenter_id}")
+                        continue
 
                     # Video ga mos keyword larni olish
                     keywords = VIDEO_KEYWORDS.get(media_id, DEFAULT_KEYWORDS)
