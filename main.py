@@ -10,10 +10,14 @@ VERIFY_TOKEN = os.environ.get("VERIFY_TOKEN", "macroicebot123")
 MY_ACCOUNT_ID = "17841444255173953"
 
 YOUTUBE_REPLY = "YouTube videoni ko'rish uchun profil biosidagi havolaga bosing! 👆🔗"
+SUPERMAN_THOR_REPLY = "🎬 Superman va Thor filmlarini o'zbek tilida ko'rish uchun biodagi havolaga bosing!"
 
 YOUTUBE_KEYWORDS = ["youtube", "ютуб", "yutub", "yutup", "youtuob", "yt", "utub", "utup", "yutib", "youtub"]
+SUPERMAN_THOR_KEYWORDS = [
+    "superman", "super man", "supermen", "super men", "супермен",
+    "thor", "tor", "тор", "thore", "thor", "торр"
+]
 
-# Video ID -> keyword -> javob
 VIDEO_KEYWORDS = {
     "18475932589097936": {
         "+": "📩 To'liq ro'yxat uchun biodagi telegram kanalimizga o'ting.",
@@ -27,7 +31,6 @@ VIDEO_KEYWORDS = {
     },
 }
 
-# Default
 DEFAULT_KEYWORDS = {
     "+": "📩 To'liq ro'yxat uchun biodagi telegram kanalimizga o'ting.",
     "marvel": "📩 To'liq Marvel ro'yxati uchun biodagi telegram kanalimizga o'ting.",
@@ -45,8 +48,8 @@ def reply_to_comment(comment_id, message):
     return response.status_code == 200
 
 
-def check_youtube(text):
-    for kw in YOUTUBE_KEYWORDS:
+def check_keywords(text, keywords):
+    for kw in keywords:
         if kw in text:
             return True
     return False
@@ -88,15 +91,20 @@ def handle_webhook():
 
                     print(f"Comment: '{comment_text}' from {commenter_id}, media: {media_id}")
 
-                    # Avval YouTube tekshirish — barcha videolarda ishlaydi
-                    if check_youtube(comment_text):
+                    # YouTube tekshirish
+                    if check_keywords(comment_text, YOUTUBE_KEYWORDS):
                         reply_to_comment(comment_id, YOUTUBE_REPLY)
                         print(f"✅ YouTube reply sent to {commenter_id}")
                         continue
 
-                    # Video ga mos keyword larni olish
-                    keywords = VIDEO_KEYWORDS.get(media_id, DEFAULT_KEYWORDS)
+                    # Superman/Thor tekshirish
+                    if check_keywords(comment_text, SUPERMAN_THOR_KEYWORDS):
+                        reply_to_comment(comment_id, SUPERMAN_THOR_REPLY)
+                        print(f"✅ Superman/Thor reply sent to {commenter_id}")
+                        continue
 
+                    # Video ga mos keyword
+                    keywords = VIDEO_KEYWORDS.get(media_id, DEFAULT_KEYWORDS)
                     for keyword, reply in keywords.items():
                         if keyword in comment_text:
                             reply_to_comment(comment_id, reply)
