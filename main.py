@@ -11,12 +11,11 @@ MY_ACCOUNT_ID = "17841444255173953"
 
 YOUTUBE_REPLY = "YouTube videoni ko'rish uchun profil biosidagi havolaga bosing! 👆🔗"
 SUPERMAN_THOR_REPLY = "🎬 Superman va Thor filmlarini o'zbek tilida ko'rish uchun biodagi havolaga bosing!"
+NOIR_REPLY = "🎬 Spider-Noir serialini ko'rish uchun biodagi havolaga bosing!"
 
 YOUTUBE_KEYWORDS = ["youtube", "ютуб", "yutub", "yutup", "youtuob", "yt", "utub", "utup", "yutib", "youtub"]
-SUPERMAN_THOR_KEYWORDS = [
-    "superman", "super man", "supermen", "super men", "супермен",
-    "thor", "tor", "тор", "thore", "thor", "торр"
-]
+SUPERMAN_THOR_KEYWORDS = ["superman", "super man", "supermen", "super men", "супермен", "thor", "tor", "тор", "thore", "торр"]
+NOIR_KEYWORDS = ["noir", "ноир", "nior", "noar", "noyr"]
 
 VIDEO_KEYWORDS = {
     "18475932589097936": {
@@ -91,16 +90,22 @@ def handle_webhook():
 
                     print(f"Comment: '{comment_text}' from {commenter_id}, media: {media_id}")
 
-                    # YouTube tekshirish
+                    # YouTube
                     if check_keywords(comment_text, YOUTUBE_KEYWORDS):
                         reply_to_comment(comment_id, YOUTUBE_REPLY)
                         print(f"✅ YouTube reply sent to {commenter_id}")
                         continue
 
-                    # Superman/Thor tekshirish
+                    # Superman/Thor
                     if check_keywords(comment_text, SUPERMAN_THOR_KEYWORDS):
                         reply_to_comment(comment_id, SUPERMAN_THOR_REPLY)
                         print(f"✅ Superman/Thor reply sent to {commenter_id}")
+                        continue
+
+                    # Noir
+                    if check_keywords(comment_text, NOIR_KEYWORDS):
+                        reply_to_comment(comment_id, NOIR_REPLY)
+                        print(f"✅ Noir reply sent to {commenter_id}")
                         continue
 
                     # Video ga mos keyword
