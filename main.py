@@ -18,19 +18,22 @@ SUPERMAN_THOR_KEYWORDS = ["superman", "super man", "supermen", "super men", "с�
 NOIR_KEYWORDS = ["noir", "ноир", "nior", "noar", "noyr"]
 
 VIDEO_KEYWORDS = {
-    "18475932589097936": {
-        "+": "📩 To'liq ro'yxat uchun biodagi telegram kanalimizga o'ting.",
-        "marvel": "📩 To'liq Marvel ro'yxati uchun biodagi telegram kanalimizga o'ting.",
-    },
-    "18096396052932962": {
-        "+": "Kinoni olish uchun avval sahifamizga obuna bo'ling va biodagi Telegram kanalimizga o'ting! 🎬",
-    },
-    "18093412184217647": {
-        "youtube": YOUTUBE_REPLY,
-    },
-    "17973591039060965": {
-        "+": "🎬 Qasoskorlar 5 syujeti haqida YouTube videoni ko'rish uchun profil shapkasidagi havolaga bosing!",
-    },
+"18475932589097936": {
+"+": "📩 To'liq ro'yxat uchun biodagi telegram kanalimizga o'ting.",
+"marvel": "📩 To'liq Marvel ro'yxati uchun biodagi telegram kanalimizga o'ting.",
+},
+"18096396052932962": {
+"+": "Kinoni olish uchun avval sahifamizga obuna bo'ling va biodagi Telegram kanalimizga o'ting! 🎬",
+},
+"18093412184217647": {
+"youtube": YOUTUBE_REPLY,
+},
+"17973591039060965": {
+"+": "🎬 Qasoskorlar 5 syujeti haqida YouTube videoni ko'rish uchun profil shapkasidagi havolaga bosing!",
+},
+"18410297920150351": {
+"+": "🎬 Qasoskorlar 5 syujeti haqida YouTube videoni ko'rish uchun profil shapkasidagi havolaga bosing!",
+},
 }
 
 DEFAULT_KEYWORDS = {
