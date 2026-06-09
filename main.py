@@ -28,6 +28,9 @@ VIDEO_KEYWORDS = {
     "18093412184217647": {
         "youtube": YOUTUBE_REPLY,
     },
+    "17973591039060965": {
+        "+": "🎬 Qasoskorlar 5 syujeti haqida YouTube videoni ko'rish uchun profil shapkasidagi havolaga bosing!",
+    },
 }
 
 DEFAULT_KEYWORDS = {
