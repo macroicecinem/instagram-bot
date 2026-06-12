@@ -31,6 +31,9 @@ VIDEO_KEYWORDS = {
     "17973591039060965": {
         "+": "🎬 Qasoskorlar 5 syujeti haqida YouTube videoni ko'rish uchun profil shapkasidagi havolaga bosing!",
     },
+    "18101827772108974": {
+        "+": "Kino va seriallarni ko'rish uchun biodagi havola orqali telegram kanalimizga o'ting!",
+    },
 }
 
 DEFAULT_KEYWORDS = {
