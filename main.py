@@ -12,10 +12,15 @@ MY_ACCOUNT_ID = "17841444255173953"
 YOUTUBE_REPLY = "YouTube videoni ko'rish uchun profil biosidagi havolaga bosing! 👆🔗"
 SUPERMAN_THOR_REPLY = "🎬 Superman va Thor filmlarini o'zbek tilida ko'rish uchun biodagi havolaga bosing!"
 NOIR_REPLY = "🎬 Spider-Noir serialini ko'rish uchun biodagi havolaga bosing!"
+HORROR_REPLY = "🎬 Horror filmni to'liq ko'rish uchun biodagi havolaga bosing va telegram kanalimizga o'ting!"
 
 YOUTUBE_KEYWORDS = ["youtube", "ютуб", "yutub", "yutup", "youtuob", "yt", "utub", "utup", "yutib", "youtub"]
 SUPERMAN_THOR_KEYWORDS = ["superman", "super man", "supermen", "super men", "супермен", "thor", "tor", "тор", "thore", "торр"]
 NOIR_KEYWORDS = ["noir", "ноир", "nior", "noar", "noyr"]
+
+ALWAYS_REPLY_VIDEOS = {
+    "18411732985199761": HORROR_REPLY,
+}
 
 VIDEO_KEYWORDS = {
     "18475932589097936": {
@@ -95,6 +100,12 @@ def handle_webhook():
                     processed_ids.add(comment_id)
 
                     print(f"Comment: '{comment_text}' from {commenter_id}, media: {media_id}")
+
+                    # ✅ ALWAYS REPLY VIDEOS - har qanday kommentga javob
+                    if media_id in ALWAYS_REPLY_VIDEOS:
+                        reply_to_comment(comment_id, ALWAYS_REPLY_VIDEOS[media_id])
+                        print(f"✅ Always-reply sent to {commenter_id} for media {media_id}")
+                        continue
 
                     # YouTube
                     if check_keywords(comment_text, YOUTUBE_KEYWORDS):
