@@ -44,8 +44,10 @@ VIDEO_KEYWORDS = {
     },
 }
 
-# DEFAULT_KEYWORDS bo'sh — faqat VIDEO_KEYWORDS da belgilangan videolarga ishlaydi
-DEFAULT_KEYWORDS = {}
+DEFAULT_KEYWORDS = {
+    "+": "📩 To'liq ro'yxat uchun biodagi telegram kanalimizga o'ting.",
+    "marvel": "📩 To'liq Marvel ro'yxati uchun biodagi telegram kanalimizga o'ting.",
+}
 
 processed_ids = set()
 
@@ -92,15 +94,8 @@ def handle_webhook():
                     comment_text = value.get("text", "").strip().lower()
                     commenter_id = value.get("from", {}).get("id")
                     media_id = value.get("media", {}).get("id")
-                    parent_id = value.get("parent_id")  # reply bo'lsa bo'sh emas
 
-                    # O'z accountimiz commentlarini o'tkazib yubor
                     if commenter_id == MY_ACCOUNT_ID:
-                        continue
-
-                    # Reply commentlarga javob berma (faqat asosiy commentlarga)
-                    if parent_id:
-                        print(f"⏭️ Skipped reply comment from {commenter_id}")
                         continue
 
                     if comment_id in processed_ids:
@@ -133,12 +128,8 @@ def handle_webhook():
                         print(f"✅ Noir reply sent to {commenter_id}")
                         continue
 
-                    # Video ga mos keyword — faqat VIDEO_KEYWORDS da bor videolarga
+                    # Video ga mos keyword
                     keywords = VIDEO_KEYWORDS.get(media_id, DEFAULT_KEYWORDS)
-                    if not keywords:
-                        print(f"⏭️ No keywords configured for media {media_id}")
-                        continue
-
                     for keyword, reply in keywords.items():
                         if keyword in comment_text:
                             reply_to_comment(comment_id, reply)
