@@ -39,6 +39,9 @@ VIDEO_KEYWORDS = {
     "18101827772108974": {
         "+": "Kino va seriallarni ko'rish uchun biodagi havola orqali telegram kanalimizga o'ting!",
     },
+    "17887646772396519": {
+        "temir": "Filmni ko'rish uchun profilim shapkasidagi havolaga bosib telegram kanalimizga o'ting👈",
+    },
 }
 
 DEFAULT_KEYWORDS = {
@@ -101,10 +104,10 @@ def handle_webhook():
 
                     print(f"Comment: '{comment_text}' from {commenter_id}, media: {media_id}")
 
-                    # ✅ ALWAYS REPLY VIDEOS - har qanday kommentga javob
+                    # ALWAYS REPLY VIDEOS
                     if media_id in ALWAYS_REPLY_VIDEOS:
                         reply_to_comment(comment_id, ALWAYS_REPLY_VIDEOS[media_id])
-                        print(f"✅ Always-reply sent to {commenter_id} for media {media_id}")
+                        print(f"✅ Always-reply sent to {commenter_id}")
                         continue
 
                     # YouTube
