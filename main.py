@@ -23,6 +23,12 @@ ALWAYS_REPLY_VIDEOS = {
 }
 
 VIDEO_KEYWORDS = {
+    "18253266406306179": {
+        "tahlil": "🎬 Avval sahifamga obuna bo'ling va biodagi macroice.uz havolasiga bosib YouTube kanalimizdan to'liq reaksiya va tahlil videoni ko'ring!",
+        "тахлил": "🎬 Avval sahifamga obuna bo'ling va biodagi macroice.uz havolasiga bosib YouTube kanalimizdan to'liq reaksiya va tahlil videoni ko'ring!",
+        "qachon chiqadi": "📅 31-iyuldan rus va ingliz tilida, o'zbek tilida esa 6-avgustdan kinoteatrlarda ko'rishingiz mumkin! Sahifamga obuna bo'ling! 🎬",
+        "qachon": "📅 31-iyuldan rus va ingliz tilida, o'zbek tilida esa 6-avgustdan kinoteatrlarda ko'rishingiz mumkin! Sahifamga obuna bo'ling! 🎬",
+    },
     "18475932589097936": {
         "+": "📩 To'liq ro'yxat uchun biodagi telegram kanalimizga o'ting.",
         "marvel": "📩 To'liq Marvel ro'yxati uchun biodagi telegram kanalimizga o'ting.",
@@ -94,8 +100,13 @@ def handle_webhook():
                     comment_text = value.get("text", "").strip().lower()
                     commenter_id = value.get("from", {}).get("id")
                     media_id = value.get("media", {}).get("id")
+                    parent_id = value.get("parent_id")
 
                     if commenter_id == MY_ACCOUNT_ID:
+                        continue
+
+                    if parent_id:
+                        print(f"⏭️ Skipped reply comment from {commenter_id}")
                         continue
 
                     if comment_id in processed_ids:
@@ -130,6 +141,10 @@ def handle_webhook():
 
                     # Video ga mos keyword
                     keywords = VIDEO_KEYWORDS.get(media_id, DEFAULT_KEYWORDS)
+                    if not keywords:
+                        print(f"⏭️ No keywords configured for media {media_id}")
+                        continue
+
                     for keyword, reply in keywords.items():
                         if keyword in comment_text:
                             reply_to_comment(comment_id, reply)
