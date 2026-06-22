@@ -23,6 +23,12 @@ ALWAYS_REPLY_VIDEOS = {
 }
 
 VIDEO_KEYWORDS = {
+    "18473768101096135": {
+        "kapitan": "🎬 Avval sahifamga obuna bo'ling va biodagi macroice.uz havolasiga bosib Telegram kanalimizdan Qasoskorlar filmini ko'ring!",
+        "capitan": "🎬 Avval sahifamga obuna bo'ling va biodagi macroice.uz havolasiga bosib Telegram kanalimizdan Qasoskorlar filmini ko'ring!",
+        "captian": "🎬 Avval sahifamga obuna bo'ling va biodagi macroice.uz havolasiga bosib Telegram kanalimizdan Qasoskorlar filmini ko'ring!",
+        "капитан": "🎬 Avval sahifamga obuna bo'ling va biodagi macroice.uz havolasiga bosib Telegram kanalimizdan Qasoskorlar filmini ko'ring!",
+    },
     "18253266406306179": {
         "tahlil": "🎬 Avval sahifamga obuna bo'ling va biodagi macroice.uz havolasiga bosib YouTube kanalimizdan to'liq reaksiya va tahlil videoni ko'ring!",
         "тахлил": "🎬 Avval sahifamga obuna bo'ling va biodagi macroice.uz havolasiga bosib YouTube kanalimizdan to'liq reaksiya va tahlil videoni ko'ring!",
