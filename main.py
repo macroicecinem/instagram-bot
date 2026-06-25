@@ -23,6 +23,9 @@ ALWAYS_REPLY_VIDEOS = {
 }
 
 VIDEO_KEYWORDS = {
+    "18078665936432123": {
+        "+": "🎬 Avval sahifamga obuna bo'ling va biodagi macroice.uz havolasiga bosib Telegram kanalimizdan filmlarni ko'ring!",
+    },
     "17994825497975971": {
         "temir": "🎬 Avval sahifamga obuna bo'ling va biodagi macroice.uz havolasiga bosib Telegram kanalimizdan Temir Odam filmini ko'ring!",
     },
