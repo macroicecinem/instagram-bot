@@ -23,6 +23,9 @@ ALWAYS_REPLY_VIDEOS = {
 }
 
 VIDEO_KEYWORDS = {
+    "18133502506596652": {
+        "serial": "Serialni O'zbek tilida ko'rish uchun sahifamiz biosidagi havola ustiga bosib \"DodaPlay\" ilovasini yuklang.",
+    },
     "18078665936432123": {
         "+": "🎬 Avval sahifamga obuna bo'ling va biodagi macroice.uz havolasiga bosib Telegram kanalimizdan filmlarni ko'ring!",
     },
