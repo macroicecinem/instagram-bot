@@ -23,6 +23,9 @@ ALWAYS_REPLY_VIDEOS = {
 }
 
 VIDEO_KEYWORDS = {
+    "18146536351513830": {
+        "it": "Avval sahifamga obuna bo'ling. Filmlarni O'zbek tilida ko'rish uchun sahifamiz biosidagi havola ustiga bosib \"DodaPlay\" ilovasini yuklang.",
+    },
     "18133502506596652": {
         "serial": "Serialni O'zbek tilida ko'rish uchun sahifamiz biosidagi havola ustiga bosib \"DodaPlay\" ilovasini yuklang.",
     },
