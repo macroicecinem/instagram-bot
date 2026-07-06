@@ -23,6 +23,12 @@ ALWAYS_REPLY_VIDEOS = {
 }
 
 VIDEO_KEYWORDS = {
+    "17874389535525083": {
+        "qiz": "Obsessiya filmini O'zbek tilida ko'rish uchun sahifamiz biosidagi havola ustiga bosib \"DodaPlay\" ilovasini yuklang.",
+        "киз": "Obsessiya filmini O'zbek tilida ko'rish uchun sahifamiz biosidagi havola ustiga bosib \"DodaPlay\" ilovasini yuklang.",
+        "qz": "Obsessiya filmini O'zbek tilida ko'rish uchun sahifamiz biosidagi havola ustiga bosib \"DodaPlay\" ilovasini yuklang.",
+        "kiz": "Obsessiya filmini O'zbek tilida ko'rish uchun sahifamiz biosidagi havola ustiga bosib \"DodaPlay\" ilovasini yuklang.",
+    },
     "18146536351513830": {
         "it": "Avval sahifamga obuna bo'ling. Filmlarni O'zbek tilida ko'rish uchun sahifamiz biosidagi havola ustiga bosib \"DodaPlay\" ilovasini yuklang.",
     },
