@@ -23,6 +23,9 @@ ALWAYS_REPLY_VIDEOS = {
 }
 
 VIDEO_KEYWORDS = {
+    "17907124410442146": {
+        "x": "Filmlar to'g'ri tartibi video izohida. Eng sara filmlarni ko'rish uchun sahifamiz biosidagi havola ustiga bosib \"DodaPlay\" ilovasini yuklang.",
+    },
     "18233163412315422": {
         "minion": "Multifilmni O'zbek tilida ko'rish uchun sahifamiz biosidagi havola ustiga bosib \"DodaPlay\" ilovasini yuklang.",
         "mnion": "Multifilmni O'zbek tilida ko'rish uchun sahifamiz biosidagi havola ustiga bosib \"DodaPlay\" ilovasini yuklang.",
