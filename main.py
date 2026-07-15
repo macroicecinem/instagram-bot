@@ -1,31 +1,23 @@
+
 import os
 import json
 import requests
 from flask import Flask, request, jsonify
-
 app = Flask(__name__)
-
 ACCESS_TOKEN = os.environ.get("ACCESS_TOKEN")
 VERIFY_TOKEN = os.environ.get("VERIFY_TOKEN", "macroicebot123")
 MY_ACCOUNT_ID = "17841444255173953"
-
 YOUTUBE_REPLY = "YouTube videoni ko'rish uchun profil biosidagi havolaga bosing! 👆🔗"
 SUPERMAN_THOR_REPLY = "🎬 Superman va Thor filmlarini o'zbek tilida ko'rish uchun biodagi havolaga bosing!"
 NOIR_REPLY = "🎬 Spider-Noir serialini ko'rish uchun biodagi havolaga bosing!"
 HORROR_REPLY = "🎬 Horror filmni to'liq ko'rish uchun biodagi havolaga bosing va telegram kanalimizga o'ting!"
-
 YOUTUBE_KEYWORDS = ["youtube", "ютуб", "yutub", "yutup", "youtuob", "yt", "utub", "utup", "yutib", "youtub"]
 SUPERMAN_THOR_KEYWORDS = ["superman", "super man", "supermen", "super men", "супермен", "thor", "tor", "тор", "thore", "торр"]
 NOIR_KEYWORDS = ["noir", "ноир", "nior", "noar", "noyr"]
-
 ALWAYS_REPLY_VIDEOS = {
     "18411732985199761": HORROR_REPLY,
 }
-
 VIDEO_KEYWORDS = {
-    "17907124410442146": {
-        "x": "Filmlar to'g'ri tartibi video izohida. Eng sara filmlarni ko'rish uchun sahifamiz biosidagi havola ustiga bosib \"DodaPlay\" ilovasini yuklang.",
-    },
     "18233163412315422": {
         "minion": "Multifilmni O'zbek tilida ko'rish uchun sahifamiz biosidagi havola ustiga bosib \"DodaPlay\" ilovasini yuklang.",
         "mnion": "Multifilmni O'zbek tilida ko'rish uchun sahifamiz biosidagi havola ustiga bosib \"DodaPlay\" ilovasini yuklang.",
@@ -86,7 +78,6 @@ VIDEO_KEYWORDS = {
         "temir": "Filmni ko'rish uchun profilim shapkasidagi havolaga bosib telegram kanalimizga o'ting👈",
     },
 }
-
 # DEFAULT_KEYWORDS o'chirildi — faqat VIDEO_KEYWORDS da belgilangan videolarga ishlaydi
 DEFAULT_KEYWORDS = {}
 
