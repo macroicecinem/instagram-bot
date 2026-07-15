@@ -87,10 +87,8 @@ VIDEO_KEYWORDS = {
     },
 }
 
-DEFAULT_KEYWORDS = {
-    "+": "📩 To'liq ro'yxat uchun biodagi telegram kanalimizga o'ting.",
-    "marvel": "📩 To'liq Marvel ro'yxati uchun biodagi telegram kanalimizga o'ting.",
-}
+# DEFAULT_KEYWORDS o'chirildi — faqat VIDEO_KEYWORDS da belgilangan videolarga ishlaydi
+DEFAULT_KEYWORDS = {}
 
 processed_ids = set()
 
