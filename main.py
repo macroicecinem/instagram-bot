@@ -1,22 +1,14 @@
-
 import os
 import json
 import requests
 from flask import Flask, request, jsonify
+
 app = Flask(__name__)
+
 ACCESS_TOKEN = os.environ.get("ACCESS_TOKEN")
 VERIFY_TOKEN = os.environ.get("VERIFY_TOKEN", "macroicebot123")
 MY_ACCOUNT_ID = "17841444255173953"
-YOUTUBE_REPLY = "YouTube videoni ko'rish uchun profil biosidagi havolaga bosing! 👆🔗"
-SUPERMAN_THOR_REPLY = "🎬 Superman va Thor filmlarini o'zbek tilida ko'rish uchun biodagi havolaga bosing!"
-NOIR_REPLY = "🎬 Spider-Noir serialini ko'rish uchun biodagi havolaga bosing!"
-HORROR_REPLY = "🎬 Horror filmni to'liq ko'rish uchun biodagi havolaga bosing va telegram kanalimizga o'ting!"
-YOUTUBE_KEYWORDS = ["youtube", "ютуб", "yutub", "yutup", "youtuob", "yt", "utub", "utup", "yutib", "youtub"]
-SUPERMAN_THOR_KEYWORDS = ["superman", "super man", "supermen", "super men", "супермен", "thor", "tor", "тор", "thore", "торр"]
-NOIR_KEYWORDS = ["noir", "ноир", "nior", "noar", "noyr"]
-ALWAYS_REPLY_VIDEOS = {
-    "18411732985199761": HORROR_REPLY,
-}
+
 VIDEO_KEYWORDS = {
     "18233163412315422": {
         "minion": "Multifilmni O'zbek tilida ko'rish uchun sahifamiz biosidagi havola ustiga bosib \"DodaPlay\" ilovasini yuklang.",
@@ -66,7 +58,7 @@ VIDEO_KEYWORDS = {
         "+": "Kinoni olish uchun avval sahifamizga obuna bo'ling va biodagi Telegram kanalimizga o'ting! 🎬",
     },
     "18093412184217647": {
-        "youtube": YOUTUBE_REPLY,
+        "youtube": "YouTube videoni ko'rish uchun profil biosidagi havolaga bosing! 👆🔗",
     },
     "17973591039060965": {
         "+": "🎬 Qasoskorlar 5 syujeti haqida YouTube videoni ko'rish uchun profil shapkasidagi havolaga bosing!",
@@ -78,8 +70,6 @@ VIDEO_KEYWORDS = {
         "temir": "Filmni ko'rish uchun profilim shapkasidagi havolaga bosib telegram kanalimizga o'ting👈",
     },
 }
-# DEFAULT_KEYWORDS o'chirildi — faqat VIDEO_KEYWORDS da belgilangan videolarga ishlaydi
-DEFAULT_KEYWORDS = {}
 
 processed_ids = set()
 
@@ -91,13 +81,6 @@ def reply_to_comment(comment_id, message):
     response = requests.post(url, json=payload, params=params)
     print(f"Comment reply: {response.status_code} - {response.text}")
     return response.status_code == 200
-
-
-def check_keywords(text, keywords):
-    for kw in keywords:
-        if kw in text:
-            return True
-    return False
 
 
 @app.route("/webhook", methods=["GET"])
@@ -141,32 +124,7 @@ def handle_webhook():
 
                     print(f"Comment: '{comment_text}' from {commenter_id}, media: {media_id}")
 
-                    # ALWAYS REPLY VIDEOS
-                    if media_id in ALWAYS_REPLY_VIDEOS:
-                        reply_to_comment(comment_id, ALWAYS_REPLY_VIDEOS[media_id])
-                        print(f"✅ Always-reply sent to {commenter_id}")
-                        continue
-
-                    # YouTube
-                    if check_keywords(comment_text, YOUTUBE_KEYWORDS):
-                        reply_to_comment(comment_id, YOUTUBE_REPLY)
-                        print(f"✅ YouTube reply sent to {commenter_id}")
-                        continue
-
-                    # Superman/Thor
-                    if check_keywords(comment_text, SUPERMAN_THOR_KEYWORDS):
-                        reply_to_comment(comment_id, SUPERMAN_THOR_REPLY)
-                        print(f"✅ Superman/Thor reply sent to {commenter_id}")
-                        continue
-
-                    # Noir
-                    if check_keywords(comment_text, NOIR_KEYWORDS):
-                        reply_to_comment(comment_id, NOIR_REPLY)
-                        print(f"✅ Noir reply sent to {commenter_id}")
-                        continue
-
-                    # Video ga mos keyword
-                    keywords = VIDEO_KEYWORDS.get(media_id, DEFAULT_KEYWORDS)
+                    keywords = VIDEO_KEYWORDS.get(media_id, {})
                     if not keywords:
                         print(f"⏭️ No keywords configured for media {media_id}")
                         continue
